@@ -1,0 +1,11 @@
+
+# ---===::{導入していただきありがとうございます！}::===---
+# "SmithingTableStopper"Pluginは"鍛冶台をクリックしても何も起こらないようにするだけ"のプラグインです！(´･ω･`)
+# なので特に競合や問題もないはずです…。
+
+# GitHub:https://github.com/coppele/SmithingTableStopper
+
+# ここを true/false にすることで起動/停止することができます！(それ以外の場合warningを出します…。)
+# またこの操作はopがあればminecraft内からも実行可能です！(/sts true/false か /sts on/off)
+
+STSOperation: true

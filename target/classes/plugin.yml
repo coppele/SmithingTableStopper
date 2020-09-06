@@ -1,0 +1,19 @@
+name: SmithingTableStopper
+version: 1.0
+main: coppele.smithingtablestopper.SmithingTableStopper
+api-version: 1.13
+author: coppele
+description: A plugin that prevents Smithing_Table from opening when clicked!
+website: https://github.com/coppele/SmithingTableStopper
+
+permissions:
+  SmithingTableStopper.sts.op:
+    default: op
+
+commands:
+  sts:
+    description: true と false を切り替えます！
+    aliases: smithingtablestopper
+    usage: §4未知のエラーです。
+    permission: SmithingTableStopper.sts.op
+    permission-message: §7§l[§8§lST§c§lS§7§l]§4あなたは権限がありません！
