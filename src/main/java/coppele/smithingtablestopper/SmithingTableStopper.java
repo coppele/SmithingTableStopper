@@ -1,13 +1,13 @@
 package coppele.smithingtablestopper;
 
 
-import org.bukkit.GameMode;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryOpenEvent;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class SmithingTableStopper extends JavaPlugin implements Listener {
@@ -32,16 +32,21 @@ public final class SmithingTableStopper extends JavaPlugin implements Listener {
 
     @EventHandler
     public void onClick(InventoryOpenEvent e) {
-        //クリックしたのが"Upgrade Gear"の場合以下のプログラムを実行します！(∩´∀｀)∩
-        if (e.getView().getType().getDefaultTitle().equals("Upgrade Gear")) {
-            config = getConfig();
+        //クリックしたのが"InventoryType.SMITHING"の場合以下のプログラムを実行します！(∩´∀｀)∩
+        if (e.getInventory().getType() == InventoryType.SMITHING) {
+            //権限があればなにもしません！
             if (e.getPlayer().hasPermission("SmithingTableStopper.sts.op")) return;
+            //コンフィグが存在しているか確認します！
             if (!config.contains("STSOperation")){
+                //なければ警告を出します！
                 getLogger().warning("config.ymlが存在しません！");
-            } else if (config.getString("STSOperation") == "true") {
+            //STSOperationに"true"か"false"かを伺います！
+            } else if (config.getBoolean("STSOperation")) {
+                //trueでしたら使用できないように強制終了。falseでしたらなにもしません。
                 e.setCancelled(true);
                 e.getPlayer().sendMessage("§7§l[§8§lST§c§lS§7§l]§4 申し訳ありませんが鍛冶台は使用できません…。");
-            } else if (!(config.getString("STSOperation") == "true" || config.getString("STSOperation") == "false")) {
+            //trueにもfalseにも設定されていない場合警告を出します！
+            } else if (!(config.getBoolean("STSOperation") || !config.getBoolean("STSOperation"))) {
                 getLogger().warning("config.ymlの\"STSOperation\"がtureまたはfalseに設定されていません！");
             }
         }
@@ -55,19 +60,27 @@ public final class SmithingTableStopper extends JavaPlugin implements Listener {
         if (command.getName().equalsIgnoreCase("sts")) {
             if (args.length == 0) {
                 //"/sts"の後に何もなければヘルプを表示します！
-                sender.sendMessage("§7§l[§8§lST§c§lS§7§l]§8§l S§7mithing§8§lT§7able§c§lS§ctopper Help");
+                sender.sendMessage("§7§l[§8§lST§c§lS§7§l]§8§l S§7mithing§8§lT§7able§c§lS§ctopper §fHelp");
                 sender.sendMessage("§7§l[§8§lST§c§lS§7§l]§f /sts <true|false> -起動/停止します");
                 sender.sendMessage("§7§l[§8§lST§c§lS§7§l]§f /sts <on|off> -起動/停止します");
                 return true;
-                //"args[0]"が"true"または"on"の場合"STSOperation"を"true"にします！
+                //"args[0]"が"true"または"on"で既にtrueではない場合"STSOperation"を"true"にします！
             }else if (args[0].equals("true")||args[0].equals("on")) {
-                config.set("STSOperation","true");
+                if (config.getBoolean("STSOperation")) {
+                    sender.sendMessage("§7§l[§8§lST§c§lS§7§l]§c すでに true に設定済みです！");
+                    return true;
+                }
+                config.set("STSOperation",true);
                 saveConfig();
                 sender.sendMessage("§7§l[§8§lST§c§lS§7§l]§e config設定 STSOperation を true に変更しました！");
                 return true;
-                //"args[0]"が"false"または"off"の場合"STSOperation"を"false"にします！
+                //"args[0]"が"false"または"off"で既にsssssssssssssfalseではない場合"STSOperation"を"false"にします！
             }else if (args[0].equals("false")||args[0].equals("off")) {
-                config.set("STSOperation","false");
+                if (!config.getBoolean("STSOperation")) {
+                    sender.sendMessage("§7§l[§8§lST§c§lS§7§l]§c すでに false に設定済みです！");
+                    return true;
+                }
+                config.set("STSOperation",false);
                 saveConfig();
                 sender.sendMessage("§7§l[§8§lST§c§lS§7§l]§e config設定 STSOperation を false に変更しました！");
                 return true;
