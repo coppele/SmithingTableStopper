@@ -10,6 +10,10 @@ import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 public final class SmithingTableStopper extends JavaPlugin implements Listener {
 
     FileConfiguration config = getConfig();
@@ -22,7 +26,6 @@ public final class SmithingTableStopper extends JavaPlugin implements Listener {
         //そしてログを残します！
         getLogger().info("Enabling SmithingTableStopper v1.0.0");
         getServer().getPluginManager().registerEvents(this,this);
-
     }
 
     @Override
@@ -74,7 +77,7 @@ public final class SmithingTableStopper extends JavaPlugin implements Listener {
                 saveConfig();
                 sender.sendMessage("§7§l[§8§lST§c§lS§7§l]§e config設定 STSOperation を true に変更しました！");
                 return true;
-                //"args[0]"が"false"または"off"で既にsssssssssssssfalseではない場合"STSOperation"を"false"にします！
+                //"args[0]"が"false"または"off"で既にfalseではない場合"STSOperation"を"false"にします！
             }else if (args[0].equals("false")||args[0].equals("off")) {
                 if (!config.getBoolean("STSOperation")) {
                     sender.sendMessage("§7§l[§8§lST§c§lS§7§l]§c すでに false に設定済みです！");
@@ -92,5 +95,21 @@ public final class SmithingTableStopper extends JavaPlugin implements Listener {
             }
         }
         return false;
+    }
+    @Override
+    //たぶほじゅー(´･ω･`)
+    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+        if (!command.getName().equalsIgnoreCase("sts")) return super.onTabComplete(sender, command, alias, args);
+        if (args.length == 1) {
+            if (args[0].length() == 0) {
+                return Arrays.asList("on", "true","off","false");
+            } else {
+                if ("on".startsWith(args[0])) return Collections.singletonList("on");
+                else if ("true".startsWith(args[0])) return Collections.singletonList("true");
+                else if ("off".startsWith(args[0])) return Collections.singletonList("off");
+                else if ("false".startsWith(args[0])) return Collections.singletonList("false");
+            }
+        }
+        return super.onTabComplete(sender, command, alias, args);
     }
 }

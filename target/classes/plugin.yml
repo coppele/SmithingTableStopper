@@ -5,6 +5,7 @@ api-version: 1.13
 author: coppele
 description: A plugin that prevents Smithing_Table from opening when clicked!
 website: https://github.com/coppele/SmithingTableStopper
+load: STARTUP
 
 permissions:
   SmithingTableStopper.sts.op:
